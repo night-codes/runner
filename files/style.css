@@ -33,17 +33,19 @@ header {
 	padding: 1rem 1rem 1rem;
 	font-weight: bold;
 	color: #fff;
-	align-self: flex-start;
 	width: 100%;
-	position: fixed;
+	position: absolute;
 	background-color: #495258;
 	background-image: url("noise.png");
 	background-size: 50px 50px;
-	height: 1.5rem;
+	height: 3.5rem;
 	vertical-align: baseline;
 	box-shadow: -5px 0px 8px rgba(0, 0, 0, 0.4);
 	text-shadow: 0 -0.8px 0 rgba(0, 0, 0, 0.2);
 	z-index: 20;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }
 
 header>span {
