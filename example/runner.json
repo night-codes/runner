@@ -1,0 +1,22 @@
+{
+    "title": "Profitplay.ru",
+    "services": {
+        "test1": {
+            "title": "Test 1",
+            "path": "test1/"
+        },
+        "test2": {
+            "title": "Test 2",
+            "path": "test2/",
+            "restartDelay": 5000,
+            "restart": true
+        },
+        "test3": {
+            "title": "Test 3",
+            "path": "test2/",
+            "restartDelay": 5000,
+            "restart": true,
+            "stopped": true
+        }
+    }
+}

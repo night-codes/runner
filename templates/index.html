@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>GoRunner</title>
+	<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no">
+	<link rel="icon" type="image/png" href="/files/favicon.png" />
+	<link rel="apple-touch-icon" href="/files/favicon.png" />
+	<link rel="stylesheet" href="/files/lucida.css">
+	<link rel="stylesheet" href="/files/style.css">
+</head>
+
+<body>
+	<header>
+		<span></span>
+		<span>Runner</span> ⇢ {{.config.Title}}
+	</header>
+	<div id="all">
+		<ul id="list">
+			{{$M := .}} {{ range $index, $service := .services}}
+			<li class='{{if eq $M.active $service.Name}}active {{end}}{{if eq $service.Status 2}}green{{else if eq $service.Status 0}}red{{end}}'>
+				<a href="/service/{{$service.Name}}">
+					<span> </span>
+					<span>{{ $service.Title }}{{if $service.Stopped}}
+						<i>(Stopped)</i>{{end}}</span>
+					<span> </span>
+				</a>
+			</li>
+			{{ end }} {{ range $index, $service := .ignored}}
+			<li class='{{if eq $M.active $service.Name}}active {{end}}grey'>
+				<a href="/service/{{$service.Name}}">
+					<span> </span>
+					<span>{{ $service.Title }}</span>
+					<span> </span>
+				</a>
+			</li>
+			{{ end }}
+		</ul>
+		<ul id="actions">
+			<li class="start"></li>
+			<li class="stop"></li>
+			<li class="restart"></li>
+			<li class="save"></li>
+		</ul>
+		<ul id="console">
+			<li class="header"># /Users/mirrr/Projects/Go/src/profitplay/cabinet</li>
+			<li>start AccessLog</li>
+			<li>end AccessLog 20.675µs</li>
+			<li>start Alives</li>
+			<li>end Alives 3.293µs</li>
+			<li>start ammocrm</li>
+			<li>end ammocrm 587.31537ms</li>
+			<li>start datework</li>
+			<li>end datework 15.452µs</li>
+			<li>start demoOptions</li>
+			<li>end demoOptions 3.871µs</li>
+			<li>start groups</li>
+			<li>end groups 32.427µs</li>
+			<li>start Levels</li>
+			<li>end Levels 9.966µs</li>
+			<li>start Main</li>
+			<li>end Main 4.738µs</li>
+			<li>start monitor</li>
+			<li>end monitor 2.631µs</li>
+			<li>Start option</li>
+			<li>End option 21.280049ms</li>
+			<li>start payments</li>
+			<li>end payments 6.144µs</li>
+			<li>start quotes</li>
+			<li>end quotes 15.289µs</li>
+			<li>start timeframes</li>
+			<li>end timeframes</li>
+			<li class="info">[INFO] 2018/05/15 16:09:43 tools.go:131: Начался</li>
+			<li class="info">[INFO] 2018/05/15 16:09:43 tools.go:164: Загрузился кабинет 122.332µs</li>
+			<li>start toptraders</li>
+			<li>end toptraders 4.522µs</li>
+			<li>start toptraders</li>
+			<li>end toptraders</li>
+			<li>start trends</li>
+			<li>end trends 5.276µs</li>
+			<li>start user</li>
+			<li>end user 17.073µs</li>
+			<li>Application started at
+				<a target="_blank" href="http://localhost:22000/">http://localhost:22000/</a>
+			</li>
+			<li class="info">[INFO] 2018/05/15 16:09:43 utils.go:250: not found</li>
+			<li class="info">[INFO] 2018/05/15 16:09:48 utils.go:250: not found</li>
+			<li class="info">[INFO] 2018/05/15 16:09:53 utils.go:250: not found</li>
+
+			<li>
+				<a href="#">./menu.go:62:45:</a> undefined: UsersStruct</li>
+			<li>
+				<a href="#">./modules.go:4:2:</a> imported and not used: "gopkg.in/night-codes/types.v1" as types</li>
+			<li>
+				<a href="#">./modules.go:111:32:</a> panel.DBName undefined (type *Panel has no field or method DBName)</li>
+			<li>
+				<a href="#">./modules.go:197:3:</a> undefined: preAllow</li>
+			<li>
+				<a href="#">./modules.go:207:14:</a> c.Writer undefined (type *tokay.Context has no field or method Writer)</li>
+			<li>
+				<a href="#">./modules.go:222:18:</a> undefined: preAllow</li>
+			<li>
+				<a href="#">./tabs.go:44:44:</a> cannot use uright (type *Rights) as type Rights in argument to checkRights</li>
+			<li>
+				<a href="#">./tabs.go:47:56:</a> cannot use uright (type *Rights) as type Rights in argument to checkRights</li>
+			<li>
+				<a href="#">./utilities.go:128:18:</a> c.Writer undefined (type *tokay.Context has no field or method Writer)</li>
+			<li>
+				<a href="#">./utilities.go:197:60:</a> c.RequestCtx.Request.Header.Get undefined (type fasthttp.RequestHeader has no field or method
+				Get)
+			</li>
+			<li>
+				<a href="#">./utilities.go:197:60:</a> too many errors</li>
+			<li class="error header"># Ошибка компиляции файла!</li>
+		</ul>
+	</div>
+
+
+</body>
+
+</html>
