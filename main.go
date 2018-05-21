@@ -18,15 +18,15 @@ var (
 
 type (
 	configStruct struct {
-		Title   string                  `json:"title"`
-		Runners map[string]runnerStruct `json:"services"`
+		Title   string         `json:"title"`
+		Runners []runnerStruct `json:"services"`
 	}
 )
 
 func main() {
 	flag.Parse()
 
-	config := &configStruct{Runners: map[string]runnerStruct{}}
+	config := &configStruct{Runners: []runnerStruct{}}
 	if configPath, err := filepath.Abs(*cpath + "/runner.json"); err == nil {
 		if raw, err := ioutil.ReadFile(configPath); err == nil {
 			if err = json.Unmarshal(raw, config); err != nil {
@@ -37,22 +37,15 @@ func main() {
 		}
 	}
 
-	active := ""
-	for name, service := range config.Runners {
+	for id, service := range config.Runners {
 		if !service.Ignore {
-			if active == "" {
-				active = name
-			}
-			makeService(name, *cpath, service)
+			makeService(id, *cpath, service)
 		} else {
-			ignoredServices = append(ignoredServices, &serviceStruct{runnerStruct: service, Name: name})
+			ignoredServices = append(ignoredServices, &serviceStruct{runnerStruct: service, ID: id})
 		}
 	}
 
-	if active == "" {
-		exit("No active services specified in runner.json")
-	}
-	webserver(config, active)
+	webserver(config)
 }
 
 func exit(err string) {

@@ -1,0 +1,6 @@
+@font-face {
+	font-family: 'Lucida Console';
+	src: local('Lucida Console'), local('LucidaConsole'), url('/files/fonts/hinted-LucidaConsole.woff2') format('woff2'), url('/files/fonts/hinted-LucidaConsole.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}

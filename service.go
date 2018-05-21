@@ -33,6 +33,7 @@ type (
 	}
 	serviceStruct struct {
 		runnerStruct
+		ID          int
 		Cmd         *exec.Cmd
 		Logs        []logMessage
 		TitleLogger logger
@@ -40,7 +41,6 @@ type (
 		ErrLogger   logger
 		Status      int
 		Dir         string
-		Name        string
 	}
 )
 
@@ -49,15 +49,15 @@ var (
 	ignoredServices = []*serviceStruct{}
 )
 
-func makeService(name, basepath string, r runnerStruct) *serviceStruct {
+func makeService(id int, basepath string, r runnerStruct) *serviceStruct {
 	s := &serviceStruct{runnerStruct: r}
 	s.Logs = []logMessage{}
-	s.Name = name
 	s.TitleLogger = logger{Type: typeInfo, Service: s}
 	s.InfoLogger = logger{Type: typeTitle, Service: s}
 	s.ErrLogger = logger{Type: typeError, Service: s}
 	s.TitleLogger.WriteString("# " + s.Dir + "\n")
 	s.Dir, _ = filepath.Abs(basepath + "/" + s.Path + "/")
+	s.ID = id
 	activeServices = append(activeServices, s)
 	makeCmd(s)
 	if !s.Stopped {

@@ -36,7 +36,7 @@ header {
 	width: 100%;
 	position: absolute;
 	background-color: #495258;
-	background-image: url("noise.png");
+	background-image: url("/files/img/noise.png");
 	background-size: 50px 50px;
 	height: 3.5rem;
 	vertical-align: baseline;
@@ -56,7 +56,7 @@ header>span {
 }
 
 header>span:first-child {
-	background: transparent url(diagram.svg) no-repeat;
+	background: transparent url("/files/img/diagram.svg") no-repeat;
 	color: #dcb6ff;
 	width: 1.6rem;
 	height: 1.6rem;
@@ -199,7 +199,7 @@ header>span:first-child {
 
 /*
  #list>li.active {
-	background: rgb(106, 119, 165) url("noise.png") !important;
+	background: rgb(106, 119, 165) url("/files/img/noise.png") !important;
 	color: #fff;
 	border-top: 1px solid rgb(106, 119, 165) !important;
 }*/
@@ -213,7 +213,7 @@ header>span:first-child {
 	width: 75%;
 	color: #ffffff;
 	background: #2a324f;
-	background-image: url("noise.png"), radial-gradient(circle at center top, rgba(57, 67, 101, 0.5), transparent), linear-gradient(#2a324f, #1a1f37);
+	background-image: url("/files/img/noise.png"), radial-gradient(circle at center top, rgba(57, 67, 101, 0.5), transparent), linear-gradient(#2a324f, #1a1f37);
 	background-size: 50px 50px, auto auto, auto auto;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
 	display: flex;
@@ -256,7 +256,7 @@ header>span:first-child {
 
 #actions {
 	background-color: #394260;
-	background: url("noise.png"), linear-gradient(#3f4969, #343e5a);
+	background: url("/files/img/noise.png"), linear-gradient(#3f4969, #343e5a);
 	background-size: 50px 50px, auto auto;
 	color: #333;
 	box-shadow: 4px 0px 8px rgba(0, 0, 0, 0.2);
@@ -279,26 +279,26 @@ header>span:first-child {
 }
 
 #actions>li.start {
-	-webkit-mask: url("start.svg") no-repeat 50% 50%;
-	mask: url("start.svg") no-repeat 50% 50%;
+	-webkit-mask: url("/files/img/start.svg") no-repeat 50% 50%;
+	mask: url("/files/img/start.svg") no-repeat 50% 50%;
 	background: #73C572;
 }
 
 #actions>li.stop {
-	-webkit-mask: url("stop.svg") no-repeat 50% 50%;
-	mask: url("stop.svg") no-repeat 50% 50%;
+	-webkit-mask: url("/files/img/stop.svg") no-repeat 50% 50%;
+	mask: url("/files/img/stop.svg") no-repeat 50% 50%;
 	background: #F08273;
 }
 
 #actions>li.restart {
-	-webkit-mask: url("restart.svg") no-repeat 50% 50%;
-	mask: url("restart.svg") no-repeat 50% 50%;
+	-webkit-mask: url("/files/img/restart.svg") no-repeat 50% 50%;
+	mask: url("/files/img/restart.svg") no-repeat 50% 50%;
 	background: #F0C500;
 }
 
 #actions>li.save {
-	-webkit-mask: url("save.svg") no-repeat 50% 50%;
-	mask: url("save.svg") no-repeat 50% 50%;
+	-webkit-mask: url("/files/img/save.svg") no-repeat 50% 50%;
+	mask: url("/files/img/save.svg") no-repeat 50% 50%;
 	background: #ccf;
 }
 

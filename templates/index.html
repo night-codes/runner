@@ -7,10 +7,10 @@
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<title>GoRunner</title>
 	<meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no">
-	<link rel="icon" type="image/png" href="/files/favicon.png" />
-	<link rel="apple-touch-icon" href="/files/favicon.png" />
-	<link rel="stylesheet" href="/files/lucida.css">
-	<link rel="stylesheet" href="/files/style.css">
+	<link rel="icon" type="image/x-icon" href="/files/img/favicon.ico" />
+	<link rel="apple-touch-icon" href="/files/img/favicon.png" />
+	<link rel="stylesheet" href="/files/css/lucida.css">
+	<link rel="stylesheet" href="/files/css/style.css">
 </head>
 
 <body>
@@ -21,8 +21,8 @@
 	<div id="all">
 		<ul id="list">
 			{{$M := .}} {{ range $index, $service := .services}}
-			<li class='{{if eq $M.active $service.Name}}active {{end}}{{if eq $service.Status 2}}green{{else if eq $service.Status 0}}red{{end}}'>
-				<a href="/service/{{$service.Name}}">
+			<li class='{{if eq $M.active $service.ID}}active {{end}}{{if eq $service.Status 2}}green{{else if eq $service.Status 0}}red{{end}}'>
+				<a href="/service/{{$service.ID}}">
 					<span> </span>
 					<span>{{ $service.Title }}{{if $service.Stopped}}
 						<i>(Stopped)</i>{{end}}</span>
@@ -30,8 +30,8 @@
 				</a>
 			</li>
 			{{ end }} {{ range $index, $service := .ignored}}
-			<li class='{{if eq $M.active $service.Name}}active {{end}}grey'>
-				<a href="/service/{{$service.Name}}">
+			<li class='{{if eq $M.active $service.ID}}active {{end}}grey'>
+				<a href="/service/{{$service.ID}}">
 					<span> </span>
 					<span>{{ $service.Title }}</span>
 					<span> </span>
