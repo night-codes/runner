@@ -13,7 +13,7 @@ var (
 )
 
 func webserver(config *configStruct, active string) {
-	r := tokay.New()
+	r := tokay.New(&tokay.Config{TemplatesDirs: []string{basepath + "/templates"}})
 	r.Debug = false
 	r.Static("/files", "files")
 	r.GET("/", func(c *tokay.Context) {

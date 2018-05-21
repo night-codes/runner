@@ -11,8 +11,8 @@ import (
 
 var (
 	editor = flag.String("editor", "sublime", "Editor to use.")
-	ex, _  = os.Executable()
-	cpath  = flag.String("path", filepath.Dir(ex)+"/", "runner.json path")
+	ex, _  = os.Getwd()
+	cpath  = flag.String("path", filepath.Dir(ex+"/")+"/", "runner.json path")
 	port   = flag.String("port", "31777", "webserver port")
 )
 
