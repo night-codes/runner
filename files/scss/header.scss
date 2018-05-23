@@ -1,0 +1,37 @@
+
+
+header {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    padding: 1rem 1rem 1rem;
+    font-weight: bold;
+    color: #fff;
+    width: 100%;
+    position: absolute;
+    background-color: #495258;
+    background-color: adjust-hue(desaturate(lighten($consoleColor, 8%), 17%), -25%);
+    background-image: url("/files/img/noise.png");
+    background-size: 50px 50px;
+    height: 3.5rem;
+    vertical-align: baseline;
+    box-shadow: -5px 0px 8px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 -0.8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 20;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+	&>span {
+		vertical-align: text-top;
+		font-size: 1.6rem;
+		color: #f4e0a4;
+		margin-left: 0.2rem;
+		&:first-child {
+			background: transparent url("/files/img/diagram.svg") no-repeat;
+			color: #dcb6ff;
+			width: 1.6rem;
+			height: 1.6rem;
+			line-height: 1rem;
+			display: inline-block;
+		}
+	}
+}

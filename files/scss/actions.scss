@@ -1,0 +1,54 @@
+
+
+#actions {
+    background-color: #394260;
+    background: url("/files/img/noise.png"), linear-gradient(desaturate(lighten($consoleColor, 10%), 7%),desaturate(lighten($consoleColor, 5%), 6%));
+    background-size: 50px 50px, auto auto;
+    color: #333;
+    box-shadow: 4px 0px 8px rgba(0, 0, 0, 0.2);
+    z-index: 8;
+    width: 3.7rem;
+    min-width: 3.7rem;
+    overflow: hidden;
+
+    &>li {
+        background-color: #f7f7f7;
+        width: 3rem;
+        max-width: 3rem;
+        height: 2.5rem;
+        padding: 0.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        background-size: 2rem;
+        background-repeat: no-repeat;
+        background-position: 1rem 0.8rem;
+
+        &.start {
+            -webkit-mask: url("/files/img/start.svg") no-repeat 50% 50%;
+            mask: url("/files/img/start.svg") no-repeat 50% 50%;
+            background: $green;
+        }
+        &.stop {
+            -webkit-mask: url("/files/img/stop.svg") no-repeat 50% 50%;
+            mask: url("/files/img/stop.svg") no-repeat 50% 50%;
+            background: $red;
+        }
+        &.restart {
+            -webkit-mask: url("/files/img/restart.svg") no-repeat 50% 50%;
+            mask: url("/files/img/restart.svg") no-repeat 50% 50%;
+            background: $yellow;
+        }
+        &.save {
+            -webkit-mask: url("/files/img/save.svg") no-repeat 50% 50%;
+            mask: url("/files/img/save.svg") no-repeat 50% 50%;
+            background: #ccf;
+        }
+        &:hover {
+            color: #000;
+            background-color: #e6e6e6;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+    }
+}
+
+

@@ -1,0 +1,67 @@
+
+
+#console {
+    width: 75%;
+    color: #ffffff;
+    background: $consoleColor;
+    background-image: url("/files/img/noise.png"), 
+    radial-gradient(circle at center top, lighten($consoleColor, 3.5%), transparent), 
+    linear-gradient($consoleColor, saturate(darken($consoleColor, 9%), 8%));
+    background-size: 50px 50px, auto auto, auto auto;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+    display: flex;
+    flex-direction: column;
+    line-height: 1.5em;
+    font-family: "Lucida Console";
+    font-size: 0.82rem;
+
+    &>li {
+        padding: 0rem 1rem;
+
+        &.header {
+            color: rgb(255, 211, 115);
+            background-color: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(180, 180, 255, 0.1);
+            padding: 1rem 1rem;
+            margin: 0.7rem 0;
+        }
+        &.error {
+            color: rgb(255, 153, 122);
+        }
+        
+        &.info {
+            color: #7AABFE;
+        }
+
+        &>a {
+            color: rgba(245, 249, 255, 0.6);
+            text-decoration: none;
+            
+            &:hover {
+                color: #eee;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &::-webkit-scrollbar {
+        width: 0.5rem;
+        height: 0.5rem;
+    }
+    
+    &::-webkit-scrollbar-track {
+        border-radius: 0;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        border-radius: 1rem;
+        background: #ffffff40;
+    }
+    
+    &::-webkit-scrollbar-thumb:window-inactive {
+        background: #ffffff40;
+    }
+}
+
+
