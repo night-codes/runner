@@ -28,20 +28,19 @@ func webserver(config *configStruct) {
 			"active":   c.ParamInt("active"),
 		})
 	})
-	go r.Run(":" + *port)
-	w := webview.New(webview.Settings{
-		Title:     "Runner",
-		Icon:      basepath + "/files/img/favicon.png",
-		URL:       "http://localhost:" + *port,
-		Height:    800,
-		Width:     1200,
-		Resizable: true,
-	})
-	w.SetColor(73, 82, 88, 255)
-	/* 	w.Dispatch(func() {
-		w.Dialog(webview.DialogTypeAlert, webview.DialogFlagInfo, "test", "test")
-		log.Println("Dispath!")
-	}) */
-
-	w.Run()
+	if *app.Gui {
+		go r.Run(":" + *app.Port)
+		w := webview.New(webview.Settings{
+			Title:     "Runner",
+			Icon:      basepath + "/files/img/favicon.png",
+			URL:       "http://localhost:" + *app.Port,
+			Height:    800,
+			Width:     1200,
+			Resizable: true,
+		})
+		w.SetColor(73, 82, 88, 255)
+		w.Run()
+	} else {
+		r.Run(":" + *app.Port)
+	}
 }

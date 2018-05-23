@@ -197,6 +197,24 @@ header>span:first-child {
 	background: #ffffff9d;
 }
 
+#list::-webkit-scrollbar {
+	width: 0.5rem;
+	height: 0.5rem;
+}
+
+#list::-webkit-scrollbar-track {
+	border-radius: 0;
+}
+
+#list::-webkit-scrollbar-thumb {
+	border-radius: 1rem;
+	background: #00000040;
+}
+
+#list::-webkit-scrollbar-thumb:window-inactive {
+	background: #00000040;
+}
+
 /*
  #list>li.active {
 	background: rgb(106, 119, 165) url("/files/img/noise.png") !important;
@@ -252,6 +270,24 @@ header>span:first-child {
 #console>li>a:hover {
 	color: #eee;
 	text-decoration: underline;
+}
+
+#console::-webkit-scrollbar {
+	width: 0.5rem;
+	height: 0.5rem;
+}
+
+#console::-webkit-scrollbar-track {
+	border-radius: 0;
+}
+
+#console::-webkit-scrollbar-thumb {
+	border-radius: 1rem;
+	background: #ffffff40;
+}
+
+#console::-webkit-scrollbar-thumb:window-inactive {
+	background: #ffffff40;
 }
 
 #actions {

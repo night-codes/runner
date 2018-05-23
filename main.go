@@ -9,17 +9,27 @@ import (
 	"path/filepath"
 )
 
-var (
-	editor = flag.String("editor", "sublime", "Editor to use.")
-	ex, _  = os.Getwd()
-	cpath  = flag.String("path", filepath.Dir(ex+"/")+"/", "runner.json path")
-	port   = flag.String("port", "31777", "webserver port")
-)
-
 type (
 	configStruct struct {
 		Title   string         `json:"title"`
 		Runners []runnerStruct `json:"services"`
+	}
+	appStruct struct {
+		Editor     *string
+		ConfigPath *string
+		Port       *string
+		Gui        *bool
+	}
+)
+
+var (
+	wd, _ = os.Getwd()
+
+	app = appStruct{
+		Editor:     flag.String("editor", "subl", "Editor to use."),
+		ConfigPath: flag.String("path", filepath.Dir(wd+"/")+"/", "runner.json path"),
+		Port:       flag.String("port", "31777", "webserver port"),
+		Gui:        flag.Bool("gui", true, "use gui window"),
 	}
 )
 
@@ -27,7 +37,7 @@ func main() {
 	flag.Parse()
 
 	config := &configStruct{Runners: []runnerStruct{}}
-	if configPath, err := filepath.Abs(*cpath + "/runner.json"); err == nil {
+	if configPath, err := filepath.Abs(*app.ConfigPath + "/runner.json"); err == nil {
 		if raw, err := ioutil.ReadFile(configPath); err == nil {
 			if err = json.Unmarshal(raw, config); err != nil {
 				fmt.Println("JSON error:", err)
@@ -39,7 +49,7 @@ func main() {
 
 	for id, service := range config.Runners {
 		if !service.Ignore {
-			makeService(id, *cpath, service)
+			makeService(id, *app.ConfigPath, service)
 		} else {
 			ignoredServices = append(ignoredServices, &serviceStruct{runnerStruct: service, ID: id})
 		}
