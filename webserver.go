@@ -5,7 +5,6 @@ import (
 	"github.com/night-codes/webview"
 	"path/filepath"
 	"runtime"
-	"strconv"
 )
 
 var (
@@ -16,17 +15,17 @@ var (
 func webserver(config *configStruct) {
 	r := tokay.New(&tokay.Config{TemplatesDirs: []string{basepath + "/templates"}})
 	r.Debug = false
-	r.Static("/files", "files")
+
+	r.Static("/files", basepath+"/files")
 	r.GET("/", func(c *tokay.Context) {
 		c.Redirect(303, "/service/0")
 	})
 	r.GET("/service/<active:\\d+>", func(c *tokay.Context) {
-		a, _ := strconv.Atoi(c.Param("active"))
 		c.HTML(200, "index", map[string]interface{}{
 			"services": activeServices,
 			"ignored":  ignoredServices,
 			"config":   config,
-			"active":   a,
+			"active":   c.ParamInt("active"),
 		})
 	})
 	go r.Run(":" + *port)
