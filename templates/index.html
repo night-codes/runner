@@ -118,6 +118,26 @@
 		</ul>
 	</div>
 
+	<script type="text/javascript">
+		document.addEventListener('keyup', function (event) {
+		    var key = event.key || event.keyCode;
+		    var ctrlDown = event.ctrlKey||event.metaKey // Mac support
+		    if (ctrlDown) {
+		    	if (key === '1') {
+			        document.getElementsByTagName("html")[0].style.fontSize = "90%";			        
+			    } else if (key === '2') {
+			        document.getElementsByTagName("html")[0].style.fontSize = "100%";	
+			    } else if (key === '3') {
+			        document.getElementsByTagName("html")[0].style.fontSize = "110%";	
+			    } else if (key === '4') {
+			        document.getElementsByTagName("html")[0].style.fontSize = "122%";	
+			    } else if (key === '5') {
+			        document.getElementsByTagName("html")[0].style.fontSize = "135%";	
+			    }
+		    }
+		});
+	</script>
+
 
 </body>
 
