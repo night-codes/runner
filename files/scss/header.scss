@@ -8,8 +8,8 @@ header {
     color: #fff;
     width: 100%;
     position: absolute;
-    background-color: #495258;
     background-color: adjust-hue(desaturate(lighten($consoleColor, 8%), 17%), -25%);
+    background-color: #495258;
     background-image: url("/files/img/noise.png");
     background-size: 50px 50px;
     height: 3.5rem;
