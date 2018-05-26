@@ -21,15 +21,16 @@ type (
 		Type    int
 	}
 	runnerStruct struct {
-		Title        string   `json:"title"`
-		Path         string   `json:"path"`
-		After        []string `json:"after"`
-		StartMessage string   `json:"startMessage"`
-		Restart      bool     `json:"restart"`
-		Stopped      bool     `json:"stopped"`
-		Ignore       bool     `json:"ignore"`
-		Delay        uint64   `json:"delay"`
-		RestartDelay uint64   `json:"restartDelay"`
+		Title        string            `json:"title"`
+		Path         string            `json:"path"`
+		After        []string          `json:"after"`
+		StartMessage string            `json:"startMessage"`
+		Restart      bool              `json:"restart"`
+		Stopped      bool              `json:"stopped"`
+		Ignore       bool              `json:"ignore"`
+		Delay        uint64            `json:"delay"`
+		RestartDelay uint64            `json:"restartDelay"`
+		Env          map[string]string `json:"env"`
 	}
 	serviceStruct struct {
 		runnerStruct
@@ -101,6 +102,11 @@ func makeCmd(s *serviceStruct) {
 	s.Cmd.Dir = s.Dir
 	s.Cmd.Stdout = &s.InfoLogger
 	s.Cmd.Stderr = &s.ErrLogger
+	e := []string{}
+	for k, v := s.Env {
+		e = append(e, k+"="+v)
+	}
+	s.Cmd.Env = e
 }
 
 /**

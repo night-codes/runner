@@ -21,7 +21,7 @@
 	<div id="all">
 		<ul id="list">
 			{{$M := .}} {{ range $index, $service := .services}}
-			<li class='{{if eq $M.active $service.ID}}active {{end}}{{if eq $service.Status 2}}green{{else if eq $service.Status 0}}red{{end}}'>
+			<li data-id="{{$service.ID}}" data-status="{{$service.Status}}" class="{{if eq $M.active $service.ID}}active {{end}}{{if eq $service.Status 2}}green{{else if eq $service.Status 0}}red{{end}}">
 				<a href="/service/{{$service.ID}}">
 					<span> </span>
 					<span>{{ $service.Title }}{{if $service.Stopped}}
@@ -30,7 +30,7 @@
 				</a>
 			</li>
 			{{ end }} {{ range $index, $service := .ignored}}
-			<li class='{{if eq $M.active $service.ID}}active {{end}}grey'>
+			<li data-id="{{$service.ID}}" data-status="3" class="{{if eq $M.active $service.ID}}active {{end}}grey">
 				<a href="/service/{{$service.ID}}">
 					<span> </span>
 					<span>{{ $service.Title }}</span>
