@@ -1,6 +1,8 @@
 var $ = require("jquery");
-var list = require("list");
 
 $(function () {
+    var app = require("app");
+    var list = require("list");
 
+    app.setActive(list.getActiveId());
 })

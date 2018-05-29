@@ -1,29 +1,37 @@
 var $ = require("jquery");
-var actions = require("actions");
 
+
+// set active list item
 exports.setActive = function (id) {
     var list = $("#list");
-    var active = list.children("[data-id=" + id + "]");
-    if (active) {
+    var item = list.children("[data-id=" + id + "]");
+    if (item) {
         list.children().removeClass("active");
-        active.addClass("active");
-        actions.setStatus(active.data("status"));
+        item.addClass("active");
+        window.history.pushState("", "", '/service/' + id);
     }
 }
-exports.current = function () {
+
+// get id of active list item
+exports.getActiveId = function () {
     var list = $("#list");
-    var active = list.children(".active");
+    var active = list.children(".active").one();
     if (active) {
         return active.data("id");
     }
     return 0;
 }
 
+// get list item by id
+exports.getById = function (id) {
+    return $("#list").children("[data-id=" + id + "]");
+}
+
 $(function () {
+    var app = require("app");
     var list = $("#list");
     list.find("li>a").on("click", function (e) {
         e.preventDefault();
-        exports.setActive($(this).parent("li").data("id"));
+        app.setActive($(this).parent("li").data("id"));
     });
-    exports.setActive(exports.current());
 })
