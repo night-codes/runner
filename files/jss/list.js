@@ -10,7 +10,6 @@ exports.setActive = function (id, onpopstate) {
         item.addClass("active");
         if (!onpopstate) {
             window.history.pushState("", "", '/service/' + id);
-            console.log("redirect history to:", '/service/' + id)
         }
     }
 }

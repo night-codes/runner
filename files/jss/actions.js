@@ -5,8 +5,9 @@ exports.setStatus = function (status) {
     var app = require("app");
     var actions = $("#actions");
 
-    actions.children().hide();
+    actions.hide();
     if (typeof status !== "undefined") {
+        actions.show();
         actions.children().show();
     }
 
