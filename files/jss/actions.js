@@ -2,9 +2,13 @@ var $ = require("jquery");
 
 
 exports.setStatus = function (status) {
-    var actions = $("#actions");
     var app = require("app");
-    actions.children().show();
+    var actions = $("#actions");
+
+    actions.children().hide();
+    if (typeof status !== "undefined") {
+        actions.children().show();
+    }
 
     switch (status) {
         case app.statusStopped:

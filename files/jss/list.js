@@ -2,13 +2,16 @@ var $ = require("jquery");
 
 
 // set active list item
-exports.setActive = function (id) {
+exports.setActive = function (id, onpopstate) {
     var list = $("#list");
     var item = list.children("[data-id=" + id + "]");
     if (item) {
         list.children().removeClass("active");
         item.addClass("active");
-        window.history.pushState("", "", '/service/' + id);
+        if (!onpopstate) {
+            window.history.pushState("", "", '/service/' + id);
+            console.log("redirect history to:", '/service/' + id)
+        }
     }
 }
 
