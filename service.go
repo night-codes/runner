@@ -103,7 +103,7 @@ func makeCmd(s *serviceStruct) {
 	s.Cmd.Stdout = &s.InfoLogger
 	s.Cmd.Stderr = &s.ErrLogger
 	e := []string{}
-	for k, v := s.Env {
+	for k, v := range s.Env {
 		e = append(e, k+"="+v)
 	}
 	s.Cmd.Env = e
