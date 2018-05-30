@@ -5,6 +5,7 @@ import (
 	"github.com/night-codes/webview"
 	"path/filepath"
 	"runtime"
+	"fmt"
 )
 
 var (
@@ -17,9 +18,11 @@ func webserver(config *configStruct) {
 	r.Debug = false
 
 	r.Static("/files", basepath+"/files")
+
 	r.GET("/", func(c *tokay.Context) {
 		c.Redirect(303, "/service/0")
 	})
+	
 	r.GET("/service/<active:\\d+>", func(c *tokay.Context) {
 		c.HTML(200, "index", map[string]interface{}{
 			"services": activeServices,
@@ -28,6 +31,24 @@ func webserver(config *configStruct) {
 			"active":   c.ParamInt("active"),
 		})
 	})
+
+	r.GET("/logs/<active:\\d+>", func(c *tokay.Context) {
+		active := c.ParamInt("active")
+		for _,service := range activeServices {
+			fmt.Println(service.ID, active)
+			if service.ID == active {
+				c.JSON(200, service.Logs)
+				return
+			}
+		}
+		c.String(404, "Not found")
+	})
+
+
+
+
+
+	// GUI start
 	if *app.Gui {
 		go r.Run(":" + *app.Port)
 		w := webview.New(webview.Settings{
