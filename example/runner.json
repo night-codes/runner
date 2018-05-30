@@ -19,6 +19,13 @@
             "stopped": true
         },
         {
+            "title": "Test ENV",
+            "command": "env",
+            "env": {
+                "testEnv": "1234567890"
+            }
+        },
+        {
             "title": "IGNORED",
             "path": "test2/",
             "restartDelay": 5000,

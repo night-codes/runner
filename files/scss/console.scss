@@ -4,9 +4,7 @@
     width: 75%;
     color: #ffffff;
     background: $consoleColor;
-    background-image: url("/files/img/noise.png"), 
-    radial-gradient(circle at center top, lighten($consoleColor, 3.5%), transparent), 
-    linear-gradient($consoleColor, saturate(darken($consoleColor, 9%), 8%));
+    background-image: url("/files/img/noise.png"), radial-gradient(circle at center top, lighten($consoleColor, 3.5%), fade-out(saturate(darken($consoleColor, 9%), 8%),0.01)), linear-gradient($consoleColor, saturate(darken($consoleColor, 9%), 8%));
     background-size: 50px 50px, auto auto, auto auto;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
     display: flex;
@@ -14,9 +12,17 @@
     line-height: 1.5em;
     font-family: "Lucida Console";
     font-size: 0.82rem;
+    padding-bottom: 1rem;
 
     &>li {
         padding: 0rem 1rem;
+        overflow-wrap: normal;  
+        word-wrap: break-word;
+        word-break: keep-all;  
+        line-break: strict;  
+        -webkit-hyphens: none; 
+        -ms-hyphens: none; 
+        hyphens: none; 
 
         &.header {
             color: rgb(255, 211, 115);

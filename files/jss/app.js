@@ -1,6 +1,7 @@
 var $ = require("jquery");
 var list = require("list");
 var actions = require("actions");
+var logs = require("logs");
 
 exports.statusStopped = 0;
 exports.statusWaiting = 1;
@@ -10,6 +11,7 @@ exports.statusIgnored = 3;
 exports.setActive = function (id, onpopstate) {
     list.setActive(id, onpopstate);
     actions.setStatusById(id);
+    logs.load(id);
 }
 
 window.onpopstate = function (event) {

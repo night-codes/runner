@@ -1,0 +1,43 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build and run",
+            "type": "shell",
+            "command": "go build -o build && ./build example/",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                // Reveal the output only if unrecognized errors occur.
+                "reveal": "always"
+            },
+            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": {
+                // The problem is owned by the cpp language service.
+                "owner": "go",
+                // The file name for reported problems is relative to the opened folder.
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                // The actual pattern to match problems in the output.
+                "pattern": {
+                    // The regular expression. Example to match: helloWorld.c:5:3: warning: implicit declaration of function ‘prinft’ [-Wimplicit-function-declaration]
+                    "regexp": "^(?: |)(..[^:()]*.(?:go|s)):([0-9]+):?([0-9]+)?:?(.*|[)]?)$",
+                    // The first match group matches the file name which is relative.
+                    "file": 2,
+                    // The second match group matches the line on which the problem occurred.
+                    "line": 3,
+                    // The third match group matches the column at which the problem occurred.
+                    "column": 4,
+                    // The fifth match group matches the message.
+                    "message": 5
+                }
+            }
+        }
+    ]
+}

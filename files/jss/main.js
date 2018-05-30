@@ -1,8 +1,8 @@
 var $ = require("jquery");
 
 $(function () {
-    var actions = require("actions");
+    var app = require("app");
     var list = require("list");
 
-    actions.setStatusById(list.getActiveId());
+    app.setActive(list.getActiveId(), true);
 })

@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"time"
@@ -30,6 +31,7 @@ type (
 		Ignore       bool              `json:"ignore"`
 		Delay        uint64            `json:"delay"`
 		RestartDelay uint64            `json:"restartDelay"`
+		Command      string            `json:"command"`
 		Env          map[string]string `json:"env"`
 	}
 	serviceStruct struct {
@@ -53,13 +55,16 @@ var (
 func makeService(id int, basepath string, r runnerStruct) *serviceStruct {
 	s := &serviceStruct{runnerStruct: r}
 	s.Logs = []logMessage{}
-	s.TitleLogger = logger{Type: typeInfo, Service: s}
-	s.InfoLogger = logger{Type: typeTitle, Service: s}
+	s.TitleLogger = logger{Type: typeTitle, Service: s}
+	s.InfoLogger = logger{Type: typeInfo, Service: s}
 	s.ErrLogger = logger{Type: typeError, Service: s}
-	s.TitleLogger.WriteString("# " + s.Dir + "\n")
 	s.Dir, _ = filepath.Abs(basepath + "/" + s.Path + "/")
+	s.TitleLogger.WriteString("# " + s.Dir + "\n")
 	s.ID = id
 	activeServices = append(activeServices, s)
+	if s.Command == "" {
+		s.Command = "go build -o build;./build;rm build"
+	}
 	makeCmd(s)
 	if !s.Stopped {
 		go func(s *serviceStruct) {
@@ -79,10 +84,10 @@ func runService(s *serviceStruct) {
 	s.Status = statusWaiting
 	err := s.Cmd.Run()
 	if err != nil {
-		log.Printf("%v finished with: %v", s.Title, err)
+		log.Printf("%v finished with: %v\n", s.Title, err)
 		s.ErrLogger.WriteString(err.Error())
 	} else {
-		log.Printf("Finished: %v", s.Title)
+		log.Printf("Finished: %v\n", s.Title)
 	}
 	s.Status = statusStopped
 	s.TitleLogger.WriteString(s.Title + " finished\n")
@@ -98,11 +103,14 @@ func runService(s *serviceStruct) {
 }
 
 func makeCmd(s *serviceStruct) {
-	s.Cmd = exec.Command("bash", "-c", "go run *.go")
+	s.Cmd = exec.Command("bash", "-c", s.Command)
 	s.Cmd.Dir = s.Dir
 	s.Cmd.Stdout = &s.InfoLogger
 	s.Cmd.Stderr = &s.ErrLogger
 	e := []string{}
+	for _, v := range os.Environ() {
+		e = append(e, v)
+	}
 	for k, v := range s.Env {
 		e = append(e, k+"="+v)
 	}

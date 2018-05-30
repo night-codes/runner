@@ -38,8 +38,6 @@ table {
   font-weight: normal;
   font-style: normal; }
 
-/* $consoleColor: #2a324f; */
-/* $consoleColor: #172024; */
 html,
 body {
   height: 100%;
@@ -70,7 +68,7 @@ header {
   color: #fff;
   width: 100%;
   position: absolute;
-  background-color: #52465c;
+  background-color: #574b61;
   background-color: #495258;
   background-image: url("/files/img/noise.png");
   background-size: 50px 50px;
@@ -189,17 +187,25 @@ header {
 #console {
   width: 75%;
   color: #ffffff;
-  background: #4e2a4f;
-  background-image: url("/files/img/noise.png"), radial-gradient(circle at center top, #5a305b, transparent), linear-gradient(#4e2a4f, #331734);
+  background: #542e55;
+  background-image: url("/files/img/noise.png"), radial-gradient(circle at center top, #5f3461, rgba(58, 26, 59, 0.99)), linear-gradient(#542e55, #3a1a3b);
   background-size: 50px 50px, auto auto, auto auto;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   line-height: 1.5em;
   font-family: "Lucida Console";
-  font-size: 0.82rem; }
+  font-size: 0.82rem;
+  padding-bottom: 1rem; }
   #console > li {
-    padding: 0rem 1rem; }
+    padding: 0rem 1rem;
+    overflow-wrap: normal;
+    word-wrap: break-word;
+    word-break: keep-all;
+    line-break: strict;
+    -webkit-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none; }
     #console > li.header {
       color: #ffd373;
       background-color: rgba(0, 0, 0, 0.2);
@@ -230,11 +236,12 @@ header {
 
 #actions {
   background-color: #394260;
-  background: url("/files/img/noise.png"), linear-gradient(#69426a, #5a375b);
+  background: url("/files/img/noise.png"), linear-gradient(#6f4670, #603c61);
   background-size: 50px 50px, auto auto;
   color: #333;
   box-shadow: 4px 0px 8px rgba(0, 0, 0, 0.2);
   z-index: 8;
+  position: relative;
   width: 3.7rem;
   min-width: 3.7rem;
   overflow: hidden; }
