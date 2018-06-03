@@ -20,29 +20,30 @@ var (
 func webserver(config *configStruct) {
 	r := tokay.New(&tokay.Config{TemplatesDirs: []string{basepath + "/templates"}})
 	r.Debug = false
-	wss := ws.New("/ws/connect", &r.RouterGroup)
+	ws1 := ws.New("/ws/connect", &r.RouterGroup)
+	ws2 := ws.New("/ws/connect2", &r.RouterGroup)
 
-	wss.Read("test", func(a *ws.Adapter) {
+	ws1.Read("test", func(a *ws.Adapter) {
 		log.Println(string(a.Command()))
 		a.Send("message interface{}")
 	})
-	wss.Read("test2", func(a *ws.Adapter) {
+	ws2.Read("test2", func(a *ws.Adapter) {
 		log.Println(string(a.Command()))
 	})
-	wss.Read("close", func(a *ws.Adapter) {
+	ws2.Read("close", func(a *ws.Adapter) {
 		a.Send("OK")
 		a.Close()
 	})
 
 	go func() {
 		for t := range time.Tick(time.Second * 3) {
-			wss.Send("ololo", t)
+			ws1.Send("ololo", t)
 		}
 	}()
 
 	go func() {
 		for t := range time.Tick(time.Second * 3) {
-			wss.Subscribers("news").Send("news", ws.Map{"time": t, "message": "news"})
+			ws2.Subscribers("news").Send("news", ws.Map{"time": t, "message": "news"})
 		}
 	}()
 
