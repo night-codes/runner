@@ -3,22 +3,17 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/alexflint/go-arg"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/alexflint/go-arg"
 )
 
 type (
 	configStruct struct {
 		Title   string         `json:"title"`
 		Runners []runnerStruct `json:"services"`
-	}
-	appStruct struct {
-		Editor     *string
-		ConfigPath *string
-		Port       *string
-		Gui        *bool
 	}
 )
 

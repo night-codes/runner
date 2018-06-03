@@ -2,6 +2,7 @@ var $ = require("jquery");
 var list = require("list");
 var actions = require("actions");
 var logs = require("logs");
+var ws = require("ws");
 
 exports.statusStopped = 0;
 exports.statusWaiting = 1;
