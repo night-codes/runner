@@ -17,14 +17,12 @@
 		var global = global || window;
 		var document = global.document;
 		var sock = null;
-		var requestID = 0;
+		var prevID = 0;
+		var requestTimeout = 0;
 		var readers = {}; // удалить
 		var subscriptions = {}; // нужны для того, чтобы переотправлять после реконнекта
 		var self = this;
-		var cid = "" + (new Date().valueOf()) + url;
-
-
-		var cid = "" + (new Date().valueOf()) + "///";
+		var cid = "" + (Math.random().toFixed(16).substring(2) + new Date().valueOf()) + url;
 
 
 		function on(type, fn) {
@@ -50,7 +48,6 @@
 
 		function trigger(type, data) {
 			var event;
-
 			if (typeof CustomEvent === "function") {
 				event = new CustomEvent(cid + type, { "result": data })
 			} else if (typeof Event === "function") {
@@ -70,8 +67,7 @@
 
 
 
-		(function () {
-			// данные получены
+		(function connect() {
 			function done(result) {
 				try {
 					result = JSON.parse(result);
@@ -79,17 +75,11 @@
 					return
 				}
 
-				if (result.requestID && cbcs[result.requestID]) {
-					cbcs[result.requestID].fn(result.data, result.command)
-					delete cbcs[result.requestID]
-				} else if (readers[result.command]) {
-					readers[result.command](result.data, result.command)
+				if (result.requestID) {
+					trigger("request:" + result.command + ":" + result.requestID, result.data)
+				} else {
+					trigger("read:" + result.command, result.data)
 				}
-				if (result && result.command) {
-					subscriptions[result.command] = true;
-					trigger('wsSubscibe', result.command);
-				}
-
 			}
 
 			sock = createWebSocket(url);
@@ -98,6 +88,7 @@
 			};
 			sock.onclose = function (e) {
 				setTimeout(connect, 300);
+
 			};
 			sock.onmessage = function (e) {
 				if (e && typeof e.data === 'string' || e.data instanceof Blob) {
@@ -115,55 +106,70 @@
 		}());
 
 		// отправить сообщение в сокет и получить ответ в коллбек
-		self.request = function (command, msg, callback) {
-			var reqID = ++requestID;
-			if (callback) {
-				cbcs[reqID] = {
-					fn: callback,
-					time: (new Date()).getTime() / 1000
-				};
-			}
-			self.send(command, msg, reqID)
-		}
-
-		// отправить сообщение в сокет и получить ответ в коллбек
-		self.send = function (command, msg, reqID) {
-			reqID = reqID || 0;
+		self.send = function (command, msg, requestID) {
+			command = command.replace(/\:/g, '_');
+			requestID = requestID || 0;
 			var msg = JSON.stringify(msg);
 			if (global.dev) {
-				msg = [reqID, command, msg].join(":");
+				msg = [requestID, command, msg].join(":");
 			} else {
 				try {
-					msg = new Blob([reqID, ":", command, ":", msg]);
+					msg = new Blob([requestID, ":", command, ":", msg]);
 				} catch (e) {
 					if (e.name == "InvalidStateError") {
-						msg = [reqID, command, msg].join(":");
+						msg = [requestID, command, msg].join(":");
 						var bb = new MSBlobBuilder();
 						bb.append(msg);
 						msg = bb.getBlob('text/csv;charset=utf-8');
 					}
 				}
 			}
-
 			if (sock && sock.readyState === WebSocket.OPEN) {
 				sock.send(msg);
 			} else {
 				one('wsConnect', function () {
+
 					sock.send(msg);
 				});
 			}
 		}
 
-		// повесить обработчик на сообщения, санкционированные сервером (без запроса)
-		self.subscribe = function (command, callback) {
-			readers[command] = callback;
-			if (typeof autoReconnect === "undefined" || autoReconnect) {
-				on('wsConnect', function () {
-					self.request(command, msg, callback);
-				});
-			}
+
+		// server messages handler
+		self.read = function (command, callback) {
+			on("read:" + command, callback)
 		}
 
+		// send request to server and wait answer to handler
+		self.request = function (command, msg, callback, timeout) {
+			var requestID = 0;
+			command = command.replace(/\:/g, '_');
+
+			if (callback) {
+				requestID = ++prevID;
+				timeout = timeout || requestTimeout;
+				one("request:" + command + ":" + requestID, callback)
+				if (timeout > 0) {
+					setTimeout(function () {
+						trigger("request:" + result.command + ":" + result.requestID)
+					}, timeout);
+				}
+			}
+			self.send(command, msg, requestID)
+		}
+
+		// set request timeout
+		self.setRequestTimeout = function (timeout) {
+			requestTimeout = timeout;
+		}
+
+		// повесить обработчик на сообщения, санкционированные сервером (без запроса)
+		self.subscribe = function (command, callback) {
+			self.send("subscribe", command);
+			on('wsConnect', function () {
+				self.send("subscribe", command);
+			});
+		}
 
 		self.wait = function (commands, callback) {
 			var cmds = {}

@@ -12,6 +12,6 @@ $(function () {
 
     var ch = ws.getChannel("/ws/connect")
     var ch2 = ws.getChannel("/ws/connect2")
-    ch.send("subscribe", "news")
-    ch2.send("subscribe", "news")
+    ch.subscribe("news");
+    ch2.subscribe("news");
 })
