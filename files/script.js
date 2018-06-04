@@ -689,13 +689,11 @@ $(function(){var app=require("app");var list=require("list");app.setActive(list.
 var ch2=ws.getChannel("/ws/connect2")
 ch.send("subscribe","news")
 ch2.send("subscribe","news")})}catch(err){throw'"'+alliance.uris["main"]+'": '+err;}},"ws":function(require,exports,module,define){"use strict";try{(function(factory){if(typeof define==='function'&&define.amd){define("ws",["exports"],factory);}else if(typeof exports==='object'){factory(exports);}else{factory(global||window);}}(function(exports){var channels={};function createWebSocket(path){return new WebSocket((location.protocol==='https:'?'wss://':'ws://')+location.host+path);}
-function Channel(url){var global=global||window;var document=global.document;var sock=null;var requestID=0;var readers={};var subscriptions={};var self=this;var cid=""+(new Date().valueOf())+url;function on(type,fn){document.addEventListener(cid+type,function(e,result){if(result&&result.data){fn(result.data);}else{fn();}});}
-function one(type,fn){var cb=function(e,result){e.target.removeEventListener(cid+type,cb);if(result&&result.data){fn(result.data);}else{fn();}}
+function Channel(url){var global=global||window;var document=global.document;var sock=null;var requestID=0;var readers={};var subscriptions={};var self=this;var cid=""+(new Date().valueOf())+url;var cid=""+(new Date().valueOf())+"///";function on(type,fn){document.addEventListener(cid+type,function(e){if(e&&e.result){fn(e.result);}else{fn();}});}
+function one(type,fn){var cb=function(e){e.target.removeEventListener(cid+type,cb);if(e&&e.result){fn(e.result);}else{fn();}}
 document.addEventListener(cid+type,cb);}
-function trigger(type,data){var e=new Event(cid+type)
-if(typeof data!=="undefined"){var e=new CustomEvent(cid+type,{"data":data})}
-document.dispatchEvent(e);}
-(function(){function done(result){try{result=JSON.parse(result);}catch(err){return}
+function trigger(type,data){var event;if(typeof CustomEvent==="function"){event=new CustomEvent(cid+type,{"result":data})}else if(typeof Event==="function"){event=new Event(cid+type,{"result":data})}else if(document.createEvent){event=document.createEvent('HTMLEvents');event.initEvent(type,true,true);}else{event=document.createEventObject();event.result=data;document.fireEvent('on'+type,event);return}
+event.result=data;document.dispatchEvent(event);};(function(){function done(result){try{result=JSON.parse(result);}catch(err){return}
 if(result.requestID&&cbcs[result.requestID]){cbcs[result.requestID].fn(result.data,result.command)
 delete cbcs[result.requestID]}else if(readers[result.command]){readers[result.command](result.data,result.command)}
 if(result&&result.command){subscriptions[result.command]=true;trigger('wsSubscibe',result.command);}}

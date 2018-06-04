@@ -24,33 +24,49 @@
 		var cid = "" + (new Date().valueOf()) + url;
 
 
+		var cid = "" + (new Date().valueOf()) + "///";
+
+
 		function on(type, fn) {
-			document.addEventListener(cid + type, function (e, result) {
-				if (result && result.data) {
-					fn(result.data);
+			document.addEventListener(cid + type, function (e) {
+				if (e && e.result) {
+					fn(e.result);
 				} else {
 					fn();
 				}
 			});
 		}
 		function one(type, fn) {
-			var cb = function (e, result) {
+			var cb = function (e) {
 				e.target.removeEventListener(cid + type, cb);
-				if (result && result.data) {
-					fn(result.data);
+				if (e && e.result) {
+					fn(e.result);
 				} else {
 					fn();
 				}
 			}
 			document.addEventListener(cid + type, cb);
 		}
+
 		function trigger(type, data) {
-			var e = new Event(cid + type)
-			if (typeof data !== "undefined") {
-				var e = new CustomEvent(cid + type, { "data": data })
+			var event;
+
+			if (typeof CustomEvent === "function") {
+				event = new CustomEvent(cid + type, { "result": data })
+			} else if (typeof Event === "function") {
+				event = new Event(cid + type, { "result": data })
+			} else if (document.createEvent) {
+				event = document.createEvent('HTMLEvents');
+				event.initEvent(type, true, true);
+			} else {
+				event = document.createEventObject();
+				event.result = data;
+				document.fireEvent('on' + type, event);
+				return
 			}
-			document.dispatchEvent(e);
-		}
+			event.result = data;
+			document.dispatchEvent(event);
+		};
 
 
 
