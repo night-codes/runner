@@ -47,25 +47,30 @@
 		}
 
 		function trigger(type, data) {
+			var t = cid + type;
 			var event;
-			if (typeof CustomEvent === "function") {
-				event = new CustomEvent(cid + type, { "result": data })
-			} else if (typeof Event === "function") {
-				event = new Event(cid + type, { "result": data })
-			} else if (document.createEvent) {
-				event = document.createEvent('HTMLEvents');
-				event.initEvent(type, true, true);
-			} else {
-				event = document.createEventObject();
-				event.result = data;
-				document.fireEvent('on' + type, event);
-				return
+
+			if (document.dispatchEvent) {
+				if (typeof CustomEvent === "function") {
+					event = new CustomEvent(t, { "result": data })
+				} else if (typeof Event === "function") {
+					event = new Event(t, { "result": data })
+				} else if (document.createEvent) {
+					event = document.createEvent('HTMLEvents');
+					event.initEvent(t, true, true);
+				}
+				if (event) {
+					event.result = data;
+					document.dispatchEvent(event);
+					return;
+				}
 			}
+
+			event = document.createEventObject();
 			event.result = data;
-			document.dispatchEvent(event);
+			document.fireEvent('on' + t, event);
+			return
 		};
-
-
 
 		(function connect() {
 			function done(result) {
