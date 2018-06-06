@@ -40,15 +40,7 @@ func webserver(config *configStruct) {
 		active := c.ParamInt("active")
 		for _, service := range activeServices {
 			if service.ID == active {
-				if _, ex := c.QueryEx("json"); !ex {
-					logs := ""
-					for _, log := range service.Logs {
-						logs += log.Time.Format("[2006-01-02 15:04:05] ") + log.Message + "\n"
-					}
-					c.String(200, logs)
-				} else {
-					c.JSON(200, service.Logs)
-				}
+				c.JSON(200, service.Logs)
 				return
 			}
 		}

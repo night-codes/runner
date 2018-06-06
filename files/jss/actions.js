@@ -6,7 +6,7 @@ exports.setStatus = function (status) {
     var actions = $("#actions");
 
     actions.hide();
-    if (typeof status !== "undefined") {
+    if (typeof status !== "undefined" && status !== app.statusIgnored) {
         actions.show();
         actions.children().show();
     }
@@ -18,11 +18,6 @@ exports.setStatus = function (status) {
         case app.statusWaiting:
         case app.statusRunned:
             actions.find(".start").hide();
-            break;
-        case app.statusIgnored:
-            actions.find(".start").hide();
-            actions.find(".stop").hide();
-            actions.find(".restart").hide();
             break;
     }
 }
