@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/night-codes/tokay"
-	"github.com/night-codes/tokay-ws"
 	"github.com/night-codes/webview"
+	"github.com/night-codes/ws"
 )
 
 var (
@@ -47,29 +47,30 @@ func webserver(config *configStruct) {
 		c.String(404, "Not found")
 	})
 
-	ws1 := ws.New("/ws/connect", &r.RouterGroup)
-	ws2 := ws.New("/ws/connect2", &r.RouterGroup)
+	wss := ws.NewTokay("/ws/connect<num:\\d+>", &r.RouterGroup)
 
-	ws1.Read("test", func(a *ws.Adapter) {
+	wss.Read("test", func(a *ws.Adapter) {
 		log.Println(string(a.Command()))
 		a.Send("message interface{}")
 	})
-	ws2.Read("test2", func(a *ws.Adapter) {
+	wss.Read("test2", func(a *ws.Adapter) {
 		log.Println(string(a.Command()))
+		time.Sleep(time.Second * 10)
+		log.Println(a.Connection().Request("p4", map[string]interface{}{"task": "build", "status": "OK", "time": 10.45}, 10))
 	})
-	ws2.Read("close", func(a *ws.Adapter) {
+	wss.Read("close", func(a *ws.Adapter) {
 		a.Send("OK")
 		a.Close()
 	})
 	go func() {
 		for t := range time.Tick(time.Second * 3) {
-			ws1.Send("ololo", t)
+			wss.Send("ololo", t)
 		}
 	}()
 
 	go func() {
 		for t := range time.Tick(time.Second * 3) {
-			ws2.Subscribers("news").Send("news", ws.Map{"time": t, "message": "news"})
+			wss.Subscribers("news").Send("news", ws.Map{"time": t, "message": "news"})
 		}
 	}()
 
