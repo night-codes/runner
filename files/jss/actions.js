@@ -1,5 +1,16 @@
 var $ = require("jquery");
+var mainWS = require("ws").getChannel("/ws");
 
+$(function () {
+    var actions = $("#actions");
+    var list = require("list")
+    actions.find(".stop").on("click", function (e) {
+        mainWS.send("stop", list.getActiveId())
+    });
+    actions.find(".start").on("click", function (e) {
+        mainWS.send("start", list.getActiveId())
+    });
+})
 
 exports.setStatus = function (status) {
     var app = require("app");

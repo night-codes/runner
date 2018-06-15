@@ -20,10 +20,8 @@
 		var sock = null;
 		var prevID = 0;
 		var requestTimeout = 30;
-		var subscriptions = {};
 		var self = this;
 		var cid = "" + (Math.random().toFixed(16).substring(2) + new Date().valueOf()) + url;
-
 
 		function on(type, fn) {
 			document.addEventListener(cid + type, function (e) {
@@ -85,6 +83,7 @@
 				} else {
 					trigger("read:" + result.command, result)
 				}
+				trigger("came", result.command)
 			}
 
 			sock = createWebSocket(url);
@@ -155,8 +154,9 @@
 			command = command.replace(/\:/g, '_');
 
 			if (typeof msg === "function") {
-				callback = msg;
 				timeout = callback;
+				callback = msg;
+				msg = "";
 			}
 
 			if (callback) {
@@ -184,7 +184,7 @@
 		}
 
 		// повесить обработчик на сообщения, санкционированные сервером (без запроса)
-		self.subscribe = function (command, callback) {
+		self.subscribe = function (command) {
 			if (sock && sock.readyState === WebSocket.OPEN) {
 				self.send("subscribe", command);
 			}
@@ -196,24 +196,21 @@
 		self.wait = function (commands, callback) {
 			var cmds = {}
 			commands.forEach(function (command) {
-				if (!subscriptions[command]) {
-					cmds[command] = true;
-				}
+				cmds[command] = true;
 			});
 
-			function wt(e, data) {
-				if (data && data.command && cmds[data.command]) {
-					delete cmds[data.command];
+			function wt(command) {
+				if (command && cmds[command]) {
+					delete cmds[command];
 				}
 				if (Object.keys(cmds).length < 1) {
 					setTimeout(callback, 1);
-				} else {
-					one('wsSubscibe', wt);
+					return
 				}
+				one('came', wt);
 			}
 			wt();
 		}
-
 	};
 
 	exports.getChannel = function (url) {

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"path/filepath"
 	"runtime"
 	"strconv"
@@ -15,12 +14,12 @@ import (
 var (
 	_, b, _, _ = runtime.Caller(0)
 	basepath   = filepath.Dir(b)
+	r          = tokay.New(&tokay.Config{TemplatesDirs: []string{basepath + "/templates"}})
+	mainWS     = ws.NewTokay("/ws", &r.RouterGroup)
+	wv         webview.WebView
 )
 
 func webserver(config *configStruct) {
-	r := tokay.New(&tokay.Config{TemplatesDirs: []string{basepath + "/templates"}})
-	r.Debug = true
-
 	r.Static("/files", basepath+"/files")
 
 	r.GET("/", func(c *tokay.Context) {
@@ -47,38 +46,11 @@ func webserver(config *configStruct) {
 		c.String(404, "Not found")
 	})
 
-	wss := ws.NewTokay("/ws/connect<num:\\d+>", &r.RouterGroup)
-
-	wss.Read("test", func(a *ws.Adapter) {
-		log.Println(string(a.Command()))
-		a.Send("message interface{}")
-	})
-	wss.Read("test2", func(a *ws.Adapter) {
-		log.Println(string(a.Command()))
-		time.Sleep(time.Second * 10)
-		log.Println(a.Connection().Request("p4", map[string]interface{}{"task": "build", "status": "OK", "time": 10.45}, 10))
-	})
-	wss.Read("close", func(a *ws.Adapter) {
-		a.Send("OK")
-		a.Close()
-	})
-	go func() {
-		for t := range time.Tick(time.Second * 3) {
-			wss.Send("ololo", t)
-		}
-	}()
-
-	go func() {
-		for t := range time.Tick(time.Second * 3) {
-			wss.Subscribers("news").Send("news", ws.Map{"time": t, "message": "news"})
-		}
-	}()
-
 	// GUI start
 	port := strconv.Itoa(app.Port)
 	if app.Gui {
 		go r.Run(":" + port)
-		w := webview.New(webview.Settings{
+		wv = webview.New(webview.Settings{
 			Title:     "Runner",
 			Icon:      basepath + "/files/img/favicon.png",
 			URL:       "http://localhost:" + port,
@@ -86,9 +58,13 @@ func webserver(config *configStruct) {
 			Width:     1200,
 			Resizable: true,
 		})
-		w.SetColor(73, 82, 88, 255)
-		w.Run()
+		wv.SetColor(73, 82, 88, 255)
+		wv.Run()
 	} else {
 		r.Run(":" + port)
 	}
+	for _, s := range activeServices {
+		s.stop()
+	}
+	time.Sleep(time.Second / 2)
 }

@@ -16,7 +16,10 @@
                 "echo": false,
                 "focus": false,
                 "panel": "new"
-            }
+            },
+            "problemMatcher": [
+                "$go"
+            ]
         }
     ]
 }

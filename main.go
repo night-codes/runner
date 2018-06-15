@@ -4,8 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"syscall"
 
 	"github.com/alexflint/go-arg"
 )
@@ -15,6 +18,7 @@ type (
 		Title   string         `json:"title"`
 		Runners []runnerStruct `json:"services"`
 	}
+	obj map[string]interface{}
 )
 
 var (
@@ -29,6 +33,22 @@ var (
 )
 
 func main() {
+	signalChannel := make(chan os.Signal, 2)
+	signal.Notify(signalChannel, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		ret := <-signalChannel
+		log.Println(ret)
+		switch ret {
+		case os.Interrupt, syscall.SIGTERM:
+			for _, s := range activeServices {
+				s.stop()
+			}
+			if wv != nil {
+				wv.Exit()
+			}
+		}
+	}()
+
 	app.ConfigPath = dir(wd)
 	app.Editor = "subl"
 	app.Port = 31777
@@ -51,7 +71,7 @@ func main() {
 		if !service.Ignore {
 			makeService(id, filepath.Dir(configPath), service)
 		} else {
-			ignoredServices = append(ignoredServices, &serviceStruct{runnerStruct: service, ID: id})
+			activeServices = append(activeServices, &serviceStruct{runnerStruct: service, ID: id, Status: statusIgnored})
 		}
 	}
 

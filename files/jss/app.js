@@ -1,8 +1,8 @@
-var $ = require("jquery");
 var list = require("list");
 var actions = require("actions");
 var logs = require("logs");
-var ws = require("ws");
+var mainWS = require("ws").getChannel("/ws");
+
 
 exports.statusStopped = 0;
 exports.statusWaiting = 1;
@@ -21,3 +21,7 @@ window.onpopstate = function (event) {
         exports.setActive(p[p.length - 1], event.state !== null);
     }
 }
+
+mainWS.read("changeStatus", function (data) {
+    list.setStatusById(data.service, data.status);
+});

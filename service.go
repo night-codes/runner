@@ -1,11 +1,17 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"syscall"
 	"time"
+
+	"gopkg.in/night-codes/types.v1"
+
+	"github.com/fatih/color"
+	"github.com/night-codes/ws"
 )
 
 const (
@@ -52,6 +58,16 @@ var (
 	ignoredServices = []*serviceStruct{}
 )
 
+func init() {
+	mainWS.Read("stop", func(a *ws.Adapter) {
+		activeServices[types.Int(a.Data())].stop()
+	})
+
+	mainWS.Read("start", func(a *ws.Adapter) {
+		activeServices[types.Int(a.Data())].start()
+	})
+}
+
 func makeService(id int, basepath string, r runnerStruct) *serviceStruct {
 	s := &serviceStruct{runnerStruct: r}
 	s.Logs = []logMessage{}
@@ -65,46 +81,57 @@ func makeService(id int, basepath string, r runnerStruct) *serviceStruct {
 	if s.Command == "" {
 		s.Command = "go build -o build;./build;rm build"
 	}
-	makeCmd(s)
+	s.makeCmd()
 	if !s.Stopped {
 		go func(s *serviceStruct) {
 			if s.Delay > 0 {
-				log.Printf("Delay %v ms before %v starting...", s.Delay, s.Title)
+				fmt.Printf("Delay %v ms before %v starting...\n", s.Delay, s.Title)
 				time.Sleep(time.Millisecond * time.Duration(s.Delay))
 			}
-			runService(s)
+			s.runService()
 		}(s)
 	}
 	return s
 }
 
-func runService(s *serviceStruct) {
-	log.Printf("Started: %v", s.Title)
-	s.Stopped = false
-	s.Status = statusWaiting
+func (s *serviceStruct) runService() {
+	s.changeStatus(statusWaiting, false)
+	green := color.New(color.FgGreen, color.Bold)
+	green.Printf("Started: %v\n", s.Title)
 	err := s.Cmd.Run()
+
+	red := color.New(color.FgRed, color.Bold)
 	if err != nil {
-		log.Printf("%v finished with: %v\n", s.Title, err)
+		red.Printf("%v finished with: %v\n", s.Title, err)
 		s.ErrLogger.WriteString(err.Error())
 	} else {
-		log.Printf("Finished: %v\n", s.Title)
+		red.Printf("Finished: %v\n", s.Title)
 	}
-	s.Status = statusStopped
+	s.changeStatus(statusStopped)
 	s.TitleLogger.WriteString(s.Title + " finished\n")
 
 	if !s.Stopped && s.Restart {
 		if s.RestartDelay > 0 {
-			log.Printf("Delay %v ms before %v restarting...", s.RestartDelay, s.Title)
+			fmt.Printf("Delay %v ms before %v restarting...\n", s.RestartDelay, s.Title)
 			time.Sleep(time.Millisecond * time.Duration(s.RestartDelay))
 		}
-		makeCmd(s)
-		runService(s)
+		s.makeCmd()
+		s.runService()
 	}
 }
 
-func makeCmd(s *serviceStruct) {
+func (s *serviceStruct) changeStatus(status int, stopped ...bool) {
+	s.Status = status
+	if len(stopped) > 0 {
+		s.Stopped = stopped[0]
+	}
+	mainWS.Send("changeStatus", obj{"status": status, "service": s.ID})
+}
+
+func (s *serviceStruct) makeCmd() {
 	s.Cmd = exec.Command("bash", "-c", s.Command)
 	s.Cmd.Dir = s.Dir
+	s.Cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 	s.Cmd.Stdout = &s.InfoLogger
 	s.Cmd.Stderr = &s.ErrLogger
 	e := []string{}
@@ -115,6 +142,24 @@ func makeCmd(s *serviceStruct) {
 		e = append(e, k+"="+v)
 	}
 	s.Cmd.Env = e
+}
+
+func (s *serviceStruct) stop() {
+	if s.Cmd != nil && (s.Status == statusRunned || s.Status == statusWaiting) {
+		pgid, err := syscall.Getpgid(s.Cmd.Process.Pid)
+		if err == nil {
+			s.changeStatus(statusWaiting, true)
+			syscall.Kill(-pgid, syscall.SIGTERM)
+		}
+		s.Cmd.Wait()
+	}
+}
+
+func (s *serviceStruct) start() {
+	if s.Cmd != nil && s.Status == statusStopped {
+		s.makeCmd()
+		s.runService()
+	}
 }
 
 /**
