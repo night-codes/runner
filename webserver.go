@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"path/filepath"
 	"runtime"
 	"strconv"
@@ -35,15 +36,24 @@ func webserver(config *configStruct) {
 		})
 	})
 
-	r.GET("/logs/<active:\\d+>", func(c *tokay.Context) {
-		active := c.ParamInt("active")
-		for _, service := range activeServices {
-			if service.ID == active {
-				c.JSON(200, service.Logs)
-				return
-			}
+	r.GET("/logs/<id:\\d+>", func(c *tokay.Context) {
+		id := c.ParamInt("id")
+		service := activeServices[id]
+		c.JSON(200, obj{"id": service.ID, "logs": service.Logs, "start": 0, "end": len(service.Logs) - 1})
+	})
+
+	r.GET("/logs/<id:\\d+>/<start:\\d+>/<end:\\d+>", func(c *tokay.Context) {
+		id := c.ParamInt("id")
+		service := activeServices[id]
+		length := len(service.Logs)
+		start := int(math.Max(0, math.Min(float64(length-1), c.ParamFloat64("start"))))
+		end := int(math.Max(0, math.Min(float64(length-1), c.ParamFloat64("end"))))
+
+		if start > end {
+			end, start = start, end
 		}
-		c.String(404, "Not found")
+
+		c.JSON(200, obj{"id": service.ID, "logs": service.Logs[start:end], "start": start, "end": end})
 	})
 
 	// GUI start

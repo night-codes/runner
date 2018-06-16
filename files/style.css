@@ -186,43 +186,54 @@ header {
 
 #console {
   width: 75%;
-  color: #ffffff;
   background: #542e55;
   background-image: url("/files/img/noise.png"), radial-gradient(circle at center top, #5f3461, rgba(58, 26, 59, 0.99)), linear-gradient(#542e55, #3a1a3b);
   background-size: 50px 50px, auto auto, auto auto;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: column;
-  line-height: 1.5em;
-  font-family: "Lucida Console";
-  font-size: 0.82rem;
-  padding-bottom: 1rem; }
-  #console > li {
-    padding: 0rem 1rem;
-    overflow-wrap: normal;
-    word-wrap: break-word;
-    word-break: keep-all;
-    line-break: strict;
-    -webkit-hyphens: none;
-    -ms-hyphens: none;
-    hyphens: none; }
-    #console > li.header {
-      color: #ffd373;
-      background-color: rgba(0, 0, 0, 0.2);
-      border-top: 1px solid rgba(0, 0, 0, 0.1);
-      border-bottom: 1px solid rgba(180, 180, 255, 0.1);
-      padding: 1rem 1rem;
-      margin: 0.7rem 0; }
-    #console > li.error {
-      color: #ff997a; }
-    #console > li.info {
-      color: #7AABFE; }
-    #console > li > a {
-      color: rgba(245, 249, 255, 0.6);
-      text-decoration: none; }
-      #console > li > a:hover {
-        color: #eee;
-        text-decoration: underline; }
+  flex-direction: column; }
+  #console > ul {
+    width: 100%;
+    color: #ffffff;
+    background: transparent;
+    line-height: 1.5em;
+    font-family: "Lucida Console";
+    font-size: 0.82rem;
+    box-shadow: none;
+    padding-bottom: 1rem; }
+    #console > ul > li {
+      padding: 0rem 1rem;
+      overflow-wrap: normal;
+      word-wrap: break-word;
+      word-break: keep-all;
+      line-break: strict;
+      -webkit-hyphens: none;
+      -ms-hyphens: none;
+      hyphens: none; }
+      #console > ul > li.header {
+        color: #ffd373;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 0.5rem 1rem;
+        margin: 0.7rem 0; }
+        #console > ul > li.header + .header {
+          margin-top: -0.7rem;
+          border-top: 0;
+          padding-top: 0; }
+      #console > ul > li.error {
+        color: #ff997a; }
+      #console > ul > li.info {
+        color: #7AABFE; }
+      #console > ul > li > a {
+        display: inline-block;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        color: rgba(245, 249, 255, 0.6);
+        text-decoration: none;
+        padding: 0.1rem 0.3rem; }
+        #console > ul > li > a:hover {
+          color: #eee;
+          text-decoration: underline; }
   #console::-webkit-scrollbar {
     width: 0.5rem;
     height: 0.5rem; }

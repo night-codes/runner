@@ -34,7 +34,9 @@ func (l *logger) WriteString(s string) (n int, err error) {
 				l.Service.changeStatus(statusRunned)
 			}
 			if m := strings.TrimSpace(v); v != "" {
-				l.Service.Logs = append(l.Service.Logs, logMessage{Time: time.Now(), Message: m, Type: l.Type})
+				msg := logMessage{Time: time.Now(), Message: m, Type: l.Type}
+				mainWS.Send("log", obj{"end": len(l.Service.Logs), "message": msg, "service": l.Service.ID})
+				l.Service.Logs = append(l.Service.Logs, msg)
 			}
 		}
 	}

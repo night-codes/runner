@@ -1,4 +1,5 @@
 var $ = require("jquery");
+var mainWS = require("ws").getChannel("/ws");
 
 
 // set active list item
@@ -33,7 +34,6 @@ exports.getById = function (id) {
 exports.setStatusById = function (id, status) {
     var item = exports.getById(id);
     var app = require("app");
-
     item.data("status", status).attr("class", item.hasClass("active") ? "active" : "");
 
     switch (status) {
@@ -53,10 +53,17 @@ exports.setStatusById = function (id, status) {
     }
 }
 
+mainWS.read("changeStatus", function (data) {
+    exports.setStatusById(data.service, data.status);
+});
+
 $(function () {
     var app = require("app");
     var list = $("#list");
     list.find("li>a").on("click", function (e) {
+        e.preventDefault();
+    });
+    list.find("li>a").on("mousedown", function (e) {
         e.preventDefault();
         app.setActive($(this).parent("li").data("id"));
     });
