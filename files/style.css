@@ -68,7 +68,7 @@ header {
   color: #fff;
   width: 100%;
   position: absolute;
-  background-color: #574b61;
+  background-color: #4d5256;
   background-color: #495258;
   background-image: url("/files/img/noise.png");
   background-size: 50px 50px;
@@ -186,9 +186,9 @@ header {
 
 #console {
   width: 75%;
-  background: #542e55;
-  background-image: url("/files/img/noise.png"), radial-gradient(circle at center top, #5f3461, rgba(58, 26, 59, 0.99)), linear-gradient(#542e55, #3a1a3b);
-  background-size: 50px 50px, auto auto, auto auto;
+  background: #2f344b;
+  background-image: url("/files/img/noise.png"), linear-gradient(#2f344b, #1a1e32);
+  background-size: 50px 50px, auto auto;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column; }
@@ -200,40 +200,58 @@ header {
     font-family: "Lucida Console";
     font-size: 0.82rem;
     box-shadow: none;
-    padding-bottom: 1rem; }
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem; }
     #console > ul > li {
-      padding: 0rem 1rem;
-      overflow-wrap: normal;
       word-wrap: break-word;
+      padding: 0.2rem 1.3rem;
+      overflow-wrap: normal;
       word-break: keep-all;
       line-break: strict;
       -webkit-hyphens: none;
       -ms-hyphens: none;
-      hyphens: none; }
-      #console > ul > li.header {
-        color: #ffd373;
-        background-color: rgba(0, 0, 0, 0.2);
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-        padding: 0.5rem 1rem;
-        margin: 0.7rem 0; }
-        #console > ul > li.header + .header {
-          margin-top: -0.7rem;
-          border-top: 0;
-          padding-top: 0; }
-      #console > ul > li.error {
-        color: #ff997a; }
-      #console > ul > li.info {
-        color: #7AABFE; }
+      hyphens: none;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden; }
+      #console > ul > li:nth-child(odd) {
+        background: rgba(0, 0, 0, 0.1); }
+      #console > ul > li.opened {
+        white-space: normal;
+        word-wrap: break-word;
+        word-break: break-all;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.3);
+        padding: 1rem 1.3rem;
+        border-top: 1px dashed rgba(255, 255, 255, 0.3);
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.3); }
       #console > ul > li > a {
-        display: inline-block;
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 4px;
-        color: rgba(245, 249, 255, 0.6);
+        cursor: default;
+        border-radius: 3px;
+        color: #fff;
         text-decoration: none;
-        padding: 0.1rem 0.3rem; }
+        padding: 0.2rem 0.3rem;
+        font-style: italic; }
         #console > ul > li > a:hover {
           color: #eee;
           text-decoration: underline; }
+      #console > ul > li.header {
+        white-space: normal;
+        color: #ffd373;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-top: 1px solid rgba(0, 0, 0, 0.1); }
+        #console > ul > li.header > a {
+          color: #ffd373; }
+        #console > ul > li.header + .header {
+          border-top: 0; }
+      #console > ul > li.error {
+        color: #ff9393; }
+        #console > ul > li.error > a {
+          color: #ffd4d4; }
+      #console > ul > li.error {
+        color: #96cafa; }
+        #console > ul > li.error > a {
+          color: #ddeaff; }
   #console::-webkit-scrollbar {
     width: 0.5rem;
     height: 0.5rem; }
@@ -247,7 +265,7 @@ header {
 
 #actions {
   background-color: #394260;
-  background: url("/files/img/noise.png"), linear-gradient(#6f4670, #603c61);
+  background: url("/files/img/noise.png"), linear-gradient(#494e64, #3d4256);
   background-size: 50px 50px, auto auto;
   color: #333;
   box-shadow: 4px 0px 8px rgba(0, 0, 0, 0.2);

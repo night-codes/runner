@@ -21,8 +21,10 @@ function printlogs(l, $console) {
                     }]
             }),
         };
-        if (val.Type == exports.typeTitle || val.Type == exports.typeError) {
-            sett.class = "header" + (val.Type == exports.typeError ? " error" : "");
+        if (val.Type == exports.typeTitle) {
+            sett.class = "header";
+        } else if (val.Type == exports.typeError) {
+            sett.class = "error";
         }
         $("<li/>", sett).appendTo($console);
     });
@@ -82,6 +84,13 @@ $(function () {
     $(window).on("resize", function (e) {
         if (down[require("app").getActive()]) {
             exports.scrollDown();
+        }
+    });
+    $("#console").on('mousedown', 'li', function (e) {
+        var ctrlDown = e.ctrlKey || e.metaKey // Mac support
+        if (ctrlDown) {
+            $("#console li.opened").removeClass("opened");
+            $(this).toggleClass("opened");
         }
     });
 });

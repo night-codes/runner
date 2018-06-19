@@ -3,8 +3,8 @@
 #console {
     width: 75%;
     background: $consoleColor;
-    background-image: url("/files/img/noise.png"), radial-gradient(circle at center top, lighten($consoleColor, 3.5%), fade-out(saturate(darken($consoleColor, 9%), 8%),0.01)), linear-gradient($consoleColor, saturate(darken($consoleColor, 9%), 8%));
-    background-size: 50px 50px, auto auto, auto auto;
+    background-image: url("/files/img/noise.png"), linear-gradient($consoleColor, saturate(darken($consoleColor, 9%), 8%));
+    background-size: 50px 50px, auto auto;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
     display: flex;
     flex-direction: column;
@@ -17,50 +17,74 @@
         font-family: "Lucida Console";
         font-size: 0.82rem;
         box-shadow: none;
-        padding-bottom: 1rem;
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
 
         &>li {
-            padding: 0rem 1rem;
-            overflow-wrap: normal;
             word-wrap: break-word;
+            padding: 0.2rem 1.3rem;
+            overflow-wrap: normal;
             word-break: keep-all;
             line-break: strict;
             -webkit-hyphens: none;
             -ms-hyphens: none;
             hyphens: none;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
 
-            &.header {
-                color: rgb(255, 211, 115);
-                background-color: rgba(0, 0, 0, 0.2);
-                border-top: 1px solid rgba(0, 0, 0, 0.1);
-                padding: 0.5rem 1rem;
-                margin: 0.7rem 0;
-                &+.header {
-                    margin-top: -0.7rem;
-                    border-top: 0;
-                    padding-top: 0;
-                    // border-top: 1px dashed rgba(255, 255, 255, 0.1);
-                }
-            }
-            &.error {
-                color: rgb(255, 153, 122);
+            &:nth-child(odd) {
+                background: rgba(0, 0, 0, 0.1);
             }
 
-            &.info {
-                color: #7AABFE;
+            &.opened {
+                white-space: normal;
+                word-wrap: break-word;
+                word-break: break-all;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.3);
+                padding: 1rem 1.3rem;
+                border-top: 1px dashed rgba(255, 255, 255, 0.3);
+                border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
             }
 
             &>a {
-                display: inline-block;
-                background: rgba(0,0,0,0.2);
-                border-radius: 4px;
-                color: rgba(245, 249, 255, 0.6);
+                cursor: default;
+                border-radius: 3px;
+                color: #fff;
                 text-decoration: none;
-                padding: 0.1rem 0.3rem;
+                padding: 0.2rem 0.3rem;
+                font-style: italic;
 
                 &:hover {
                     color: #eee;
                     text-decoration: underline;
+                }
+            }
+
+            &.header {
+                white-space: normal;
+                color: rgb(255, 211, 115);
+                &>a {
+                    color: rgb(255, 211, 115);
+                }
+                background-color: rgba(0, 0, 0, 0.2);
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+                &+.header {
+                    border-top: 0;
+                }
+            }
+            &.error {
+                color: rgb(255, 147, 147);
+                &>a {
+                    color: rgb(255, 212, 212);
+                }
+            }
+
+            &.error {
+                color: rgb(150, 202, 250);
+                &>a {
+                    color: rgb(221, 234, 255);
                 }
             }
         }
