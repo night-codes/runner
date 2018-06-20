@@ -3,14 +3,17 @@ var mainWS = require("ws").getChannel("/ws");
 
 $(function () {
     var actions = $("#actions");
-    var list = require("list")
+    var list = require("list");
     actions.find(".stop").on("click", function (e) {
-        mainWS.send("stop", list.getActiveId())
+        mainWS.send("stop", list.getActiveId());
+    });
+    actions.find(".restart").on("click", function (e) {
+        mainWS.send("restart", list.getActiveId());
     });
     actions.find(".start").on("click", function (e) {
-        mainWS.send("start", list.getActiveId())
+        mainWS.send("start", list.getActiveId());
     });
-})
+});
 
 exports.setStatus = function (status) {
     var app = require("app");
@@ -31,11 +34,11 @@ exports.setStatus = function (status) {
             actions.find(".start").hide();
             break;
     }
-}
+};
 
 exports.setStatusById = function (id) {
     var item = require("list").getById(id);
     if (item) {
-        exports.setStatus(item.data("status"))
+        exports.setStatus(item.data("status"));
     }
-}
+};

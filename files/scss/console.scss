@@ -22,7 +22,7 @@
 
         &>li {
             word-wrap: break-word;
-            padding: 0.2rem 1.3rem;
+            padding: 0.3rem 1.3rem;
             overflow-wrap: normal;
             word-break: keep-all;
             line-break: strict;
@@ -75,13 +75,13 @@
                 }
             }
             &.error {
-                color: rgb(255, 147, 147);
+                color: rgb(255, 159, 147);
                 &>a {
                     color: rgb(255, 212, 212);
                 }
             }
 
-            &.error {
+            &.info {
                 color: rgb(150, 202, 250);
                 &>a {
                     color: rgb(221, 234, 255);
@@ -105,5 +105,37 @@
 
     &::-webkit-scrollbar-thumb:window-inactive {
         background: #ffffff40;
+    }
+}
+
+
+#cntnr{
+    display:none;
+    position:fixed;
+    border: none;
+    background:rgba(220,220,220,0.95);
+    box-shadow: 0 0 1px rgba(0,0,0,0.1), 0 0 10px rgba(0,0,0,0.4);
+    border-radius: 4px;
+    padding: 0;
+    cursor: default;
+    ul{
+        list-style:none;
+        margin:0px;
+        margin: 0;
+        color: #444444;
+        li{
+            padding: 0.4rem 3rem 0.4rem 1rem;
+            &:hover{
+                color: white;
+                background:#5591c9;
+            }
+            &:first-child {
+                border-radius: 3px 3px 0 0;
+            }
+            &:last-child {
+                border-radius: 0 0 3px 3px;
+            }
+            cursor: default;
+        }
     }
 }

@@ -8,27 +8,31 @@
     background: #ccc;
 	background: linear-gradient(#fff, #ccc);
 	line-height: normal;
-	
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -o-user-select: none;
+	user-select: none;
+	cursor: default;
+
 	&>li {
 		display: block;
 		border-top: 1px solid rgba(50, 50, 50, 0.1);
 		position: relative;
 		color: #333;
 		background: #fff;
-		cursor: pointer;
-		
+
 		&:nth-child(1),	&.active+li {
 			border-color: transparent !important;
 		}
 		&:last-child {
 			border-bottom: 1px solid rgba(50, 50, 50, 0.1);
 		}
-		
+
 		i {
 			font-style: normal;
 			opacity: 0.4;
 		}
-		
+
 		&>a {
 			display: flex;
 			padding: 1rem 1.5rem;
@@ -37,10 +41,12 @@
 			outline-style: none;
 			text-decoration: none;
 			color: #333;
+			cursor: default;
 
 			&>span {
 				width: 2rem;
 				align-self: stretch;
+				cursor: default;
 
 				&:nth-child(1) {
 					color: transparent;
@@ -78,7 +84,7 @@
 			color: #111;
 			background: $hover;
 			border-color: $hover;
-			
+
 			&+li {
 				border-color: $hover;
 			}
@@ -87,7 +93,7 @@
 		&.active {
 			background: $yellow*0.9;
 			border-color: $yellow*0.9 !important;
-			
+
 			&.red {
 				background: $red*0.9;
 				border-color: $red*0.9 !important;
@@ -117,34 +123,17 @@
 		width: 0.5rem;
 		height: 0.5rem;
 	}
-	
+
 	&::-webkit-scrollbar-track {
 		border-radius: 0;
 	}
-	
+
 	&::-webkit-scrollbar-thumb {
 		border-radius: 1rem;
 		background: rgba(0, 0, 0, 0.4);
 	}
-	
+
 	&::-webkit-scrollbar-thumb:window-inactive {
 		background: rgba(0, 0, 0, 0.4);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

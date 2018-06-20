@@ -66,6 +66,12 @@ func init() {
 	mainWS.Read("start", func(a *ws.Adapter) {
 		activeServices[types.Int(a.Data())].start()
 	})
+
+	mainWS.Read("restart", func(a *ws.Adapter) {
+		activeServices[types.Int(a.Data())].stop()
+		time.Sleep(time.Second / 3)
+		activeServices[types.Int(a.Data())].start()
+	})
 }
 
 func makeService(id int, basepath string, r runnerStruct) *serviceStruct {
@@ -84,6 +90,7 @@ func makeService(id int, basepath string, r runnerStruct) *serviceStruct {
 	s.makeCmd()
 	if !s.Stopped {
 		go func(s *serviceStruct) {
+			time.Sleep(time.Second / 2)
 			if s.Delay > 0 {
 				fmt.Printf("Delay %v ms before %v starting...\n", s.Delay, s.Title)
 				time.Sleep(time.Millisecond * time.Duration(s.Delay))
@@ -149,7 +156,7 @@ func (s *serviceStruct) stop() {
 		pgid, err := syscall.Getpgid(s.Cmd.Process.Pid)
 		if err == nil {
 			s.changeStatus(statusWaiting, true)
-			syscall.Kill(-pgid, syscall.SIGTERM)
+			syscall.Kill(-pgid, syscall.SIGKILL)
 		}
 		s.Cmd.Wait()
 	}

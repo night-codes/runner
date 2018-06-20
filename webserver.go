@@ -76,5 +76,5 @@ func webserver(config *configStruct) {
 	for _, s := range activeServices {
 		s.stop()
 	}
-	time.Sleep(time.Second / 2)
+	time.Sleep(time.Second / 4)
 }

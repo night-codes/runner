@@ -13,7 +13,7 @@ exports.setActive = function (id, onpopstate) {
             window.history.pushState("", "", '/service/' + id);
         }
     }
-}
+};
 
 // get id of active list item
 exports.getActiveId = function () {
@@ -23,12 +23,12 @@ exports.getActiveId = function () {
         return active.data("id");
     }
     return 0;
-}
+};
 
 // get list item by id
 exports.getById = function (id) {
     return $("#list").children("[data-id=" + id + "]");
-}
+};
 
 
 exports.setStatusById = function (id, status) {
@@ -51,7 +51,7 @@ exports.setStatusById = function (id, status) {
     if (exports.getActiveId() == id) {
         require("actions").setStatus(status);
     }
-}
+};
 
 mainWS.read("changeStatus", function (data) {
     exports.setStatusById(data.service, data.status);
@@ -67,4 +67,4 @@ $(function () {
         e.preventDefault();
         app.setActive($(this).parent("li").data("id"));
     });
-})
+});

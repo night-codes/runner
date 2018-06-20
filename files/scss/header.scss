@@ -20,7 +20,13 @@ header {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+	cursor: default;
 	&>span {
+	    cursor: default;
 		vertical-align: text-top;
 		font-size: 1.6rem;
 		color: #f4e0a4;
