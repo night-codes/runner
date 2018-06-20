@@ -1,6 +1,7 @@
 var $ = require("jquery");
 var anchorme = require("anchorme");
 var mainWS = require("ws").getChannel("/ws");
+var dialog = require("dialog");
 
 var logs = {};
 var starts = {};
@@ -129,11 +130,18 @@ $(function () {
             $(document).off("mousedown", sfn);
             return false;
         });
-        $("#copyMenuItem").on("mousedown", function sfn() {
+        $("#copyMenuItem").on("mousedown", function () {
             document.execCommand('copy');
         });
-        $("#refreshMenuItem").on("mousedown", function sfn() {
+        $("#refreshMenuItem").on("mousedown", function () {
             location.reload();
+        });
+        $("#clearMenuItem").on("mousedown", function () {
+            dialog.confirm("Are you sure?", "Do you want to clear all service logs? This action can not be undone.", function () {
+                var id = require("app").getActive();
+                mainWS.send("clear", id);
+                getConsole(id).empty();
+            });
         });
         $(document).on("mousedown", function sfn() {
             $("#cntnr").hide();

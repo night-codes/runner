@@ -24,7 +24,10 @@ header {
     -khtml-user-select: none;
     -o-user-select: none;
     user-select: none;
-	cursor: default;
+    cursor: default;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 	&>span {
 	    cursor: default;
 		vertical-align: text-top;

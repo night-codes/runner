@@ -1,0 +1,84 @@
+.dialog-ovelay {
+    z-index: 600;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(100,100,100,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+
+    .dialog {
+        width: 25rem;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0 0 2px rgba(0,0,0,0.1), 2px 2px 15px rgba(0,0,0,0.2);
+
+        .header {
+            padding: 1rem 1rem;
+            background-color: #3470a8;
+            border-radius: 3px 3px 0 0;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+            cursor: default;
+
+            h3 {
+                font-size: 1.2rem;
+                font-weight: bold;
+                margin: 0;
+                color: #fff;
+                display: inline-block;
+            }
+        }
+        .dialog-msg {
+            padding: 1rem;
+            min-height: 3rem;
+            line-height: 1.7rem;
+        }
+        footer {
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+            background: #e5e5e5;
+            padding: 0.5rem 1rem;
+            border-radius: 0 0 3px 3px;
+            cursor: default;
+
+            .controls {
+                direction: rtl;
+
+                .button {
+                    padding: 0.5rem 1rem;
+                    border-radius: 3px;
+                    font-size: 1rem;
+                    cursor: default;
+
+                    &.button-default {
+                        background-color: rgb(248, 248, 248);
+                        border: none;
+                        color: #5D5D5D;
+                        &:active {
+                            background-color: rgba(200, 200, 200, 1);
+                            color: rgb(49, 49, 49);
+                        }
+                    }
+                    &.button-danger {
+                        background-color: #f55670;
+                        border: none;
+                        color: #f5f5f5;
+                        &:active {
+                            opacity: 0.7;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

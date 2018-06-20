@@ -63,6 +63,10 @@ func init() {
 		activeServices[types.Int(a.Data())].stop()
 	})
 
+	mainWS.Read("clear", func(a *ws.Adapter) {
+		activeServices[types.Int(a.Data())].Logs = []logMessage{}
+	})
+
 	mainWS.Read("start", func(a *ws.Adapter) {
 		activeServices[types.Int(a.Data())].start()
 	})

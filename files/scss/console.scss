@@ -135,7 +135,15 @@
             &:last-child {
                 border-radius: 0 0 3px 3px;
             }
+            &.hr {
+                background: #cccccc !important;
+                height: 1px;
+                padding: 0;
+            }
             cursor: default;
+            b {
+                font-weight: bold;
+            }
         }
     }
 }
