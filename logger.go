@@ -6,9 +6,10 @@ import (
 )
 
 const (
-	typeInfo  = 0
-	typeTitle = 1
-	typeError = 2
+	typeInfo    = 0
+	typeTitle   = 1
+	typeError   = 2
+	typeWarning = 3
 )
 
 type (
