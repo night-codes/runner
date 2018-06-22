@@ -25,4 +25,3 @@ script:
   - go vet
   - go test -v ./... -cover
   - go build -o build
-  - ./build example
